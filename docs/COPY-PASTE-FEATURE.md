@@ -229,8 +229,7 @@ the repo root (no install needed — `npx` downloads the Firebase CLI on the fly
 npx firebase-tools deploy --only firestore:rules
 ```
 
-(First time only: run `npx firebase-tools login` — it opens a browser to authorize — and make
-sure `.firebaserc` has your real project id, see `GUIDE.md § 2`.)
+(First time only: run `npx firebase-tools login` — it opens a browser to authorize.)
 
 ---
 
