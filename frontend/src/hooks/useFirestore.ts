@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import {
   onSnapshot,
   query,
+  queryEqual,
   type CollectionReference,
   type DocumentData,
   type Query,
@@ -30,14 +31,24 @@ export function useCollection<T extends DocumentData>(
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
 
-  useEffect(() => {
-    const q: Query<T> =
-      queryConstraints.length > 0
-        ? query(collectionRef, ...queryConstraints)
-        : query(collectionRef)
+  // Callers typically pass a freshly constructed CollectionReference/query
+  // constraints on every render (e.g. useCollection(getNotesCollection(), ...)),
+  // which have a new object identity each render even when logically the same
+  // query. Depending on them directly in useEffect's deps array caused an
+  // infinite subscribe/unsubscribe loop. queryEqual() lets us keep the same
+  // Query instance across renders unless it actually changed (e.g. `uid` in a
+  // where() clause becoming available after auth resolves) — the React-docs
+  // pattern for deriving stable state across renders without an effect.
+  const q: Query<T> =
+    queryConstraints.length > 0 ? query(collectionRef, ...queryConstraints) : query(collectionRef)
+  const [stableQuery, setStableQuery] = useState(q)
+  if (!queryEqual(stableQuery, q)) {
+    setStableQuery(q)
+  }
 
+  useEffect(() => {
     const unsubscribe = onSnapshot(
-      q,
+      stableQuery,
       (snapshot) => {
         setData(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as T[])
         setLoading(false)
@@ -49,8 +60,7 @@ export function useCollection<T extends DocumentData>(
     )
 
     return () => unsubscribe()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [collectionRef])
+  }, [stableQuery])
 
   return { data, loading, error }
 }
