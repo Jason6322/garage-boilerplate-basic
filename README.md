@@ -129,7 +129,8 @@ pnpm run validate         # Check for unreplaced template placeholders
 
 Security is enforced in independent layers — Claude Code guard hooks, HTTP hardening (helmet/CORS/rate limits), token + session-cookie auth, Zod input validation, default-deny Firestore rules, and CI scanning (`pnpm audit`). See [docs/SECURITY.md](docs/SECURITY.md).
 
-### Known `pnpm audit` findings (manual fix) - this is to fix the PR
+### Known `pnpm audit` findings (manual fix)
+
 
 `pnpm audit` currently flags two high-severity CVEs — both transitive, dev/build-time only, not runtime-reachable:
 
