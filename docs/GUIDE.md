@@ -4,6 +4,8 @@ This guide takes you from a fresh clone to shipping your first feature. No prior
 
 **What you'll build along the way:** a "notes" feature — users can create and see their own notes, stored in Firestore, with everything secured properly.
 
+Finally to depoy to Vercel use this guide - [DEPLOY-TO-VERCEL.md](DEPLOY-TO-VERCEL.md)
+
 [![Watch the video](https://img.youtube.com/vi/_83ix3JecpY/maxresdefault.jpg)](https://youtu.be/_83ix3JecpY)
 
 
