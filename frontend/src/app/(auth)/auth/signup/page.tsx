@@ -90,7 +90,7 @@ export default function SignUpPage() {
           <span className="w-full border-t border-zinc-200 dark:border-zinc-700" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-zinc-50 px-2 text-zinc-400 dark:bg-zinc-950">or</span>
+          <span className="bg-white px-2 text-zinc-400 dark:bg-zinc-950">or</span>
         </div>
       </div>
 
