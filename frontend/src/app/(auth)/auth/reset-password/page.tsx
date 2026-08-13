@@ -66,7 +66,7 @@ export default function ResetPasswordPage() {
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? 'email-error' : undefined}
             className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-500 focus:outline-none aria-invalid:border-red-500 dark:border-zinc-700 dark:bg-zinc-900"
-            placeholder="you@rmit.edu.au"
+            placeholder="you@example.com"
             {...register('email')}
           />
           {errors.email && (
