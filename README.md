@@ -194,14 +194,10 @@ See [CLAUDE.md](CLAUDE.md) for the full harness reference.
 
 ## Deployment
 
-The frontend deploys to **Vercel** (free Hobby tier, no billing account needed — this app is server-rendered, so it needs a server host, not static hosting). Firestore rules deploy automatically from CI on merge to `main`; the optional backend (Cloud Function) deploys manually and requires Firebase's paid Blaze plan. Full setup: [docs/CI-CD.md](docs/CI-CD.md).
-
+The frontend deploys to **Vercel** (free Hobby tier, no billing account needed — this app is server-rendered, so it needs a server host, not static hosting). 
 Use this to depoy to Vercel - [DEPLOY-TO-VERCEL.md](DEPLOY-TO-VERCEL.md)
 
-```bash
-npx firebase-tools deploy --only firestore:rules    # rules — free
-npx firebase-tools deploy --only functions          # backend — optional, requires Blaze
-```
+
 
 ## Forking for a Client Project
 

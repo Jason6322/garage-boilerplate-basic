@@ -114,15 +114,16 @@ More troubleshooting lives in the [README](../README.md#troubleshooting).
 
 ---
 
-## 7. Shipping it
+## 7. Shipping it - Deploy to Vercel
 
-Local dev talks to your Firebase project already — going live just means putting the frontend somewhere public. Deploy to [Vercel](https://vercel.com) (free, no billing account needed): sign in with GitHub, **Add New Project**, import this repo, set **Root Directory** to `frontend`, then add the environment variables listed in [CI-CD.md § Vercel Setup](CI-CD.md#vercel-setup-frontend) — Vercel doesn't read your root `.env` file, so each variable has to be added manually under the same name it has there.
+Local dev talks to your Firebase project already — going live just means putting the frontend somewhere public. Deploy to [Vercel](https://vercel.com) (free, no billing account needed): sign in with GitHub, **Add New Project**, import this repo, set **Root Directory** to `frontend`, then add the environment variables listed — Vercel doesn't read your root `.env` file, so each variable has to be added manually under the same name it has there. For a step-by-step walkthrough, see [DEPLOY-TO-VERCEL.md](DEPLOY-TO-VERCEL.md).
 
 ## 8. Going further
 
 
 - [COPY-PASTE-SETUP.md](COPY-PASTE-SETUP.md) — Part 1, pure copy-paste, no AI: install, connect Firebase, run
 - [COPY-PASTE-FEATURE.md](COPY-PASTE-FEATURE.md) — Part 2, pure copy-paste, no AI: build the feature, branch, commit, PR
+- [DEPLOY-TO-VERCEL.md](DEPLOY-TO-VERCEL.md) — step-by-step guide to taking your app live on Vercel
 - [garage-boilerplate-guide.pptx](garage-boilerplate-guide.pptx) — slide deck covering the whole system, including how the AI tooling fits in
 - [notes-feature-tutorial.pptx](notes-feature-tutorial.pptx) — this walkthrough as a slide deck, one step per slide
 - [ARCHITECTURE.md](ARCHITECTURE.md) — diagrams and the reasoning behind the design
