@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -10,13 +10,17 @@ import { useAuth } from '@/hooks/useAuth'
 import { loginSchema, type LoginInput } from '@/lib/validations/auth'
 import { FullPageSpinner } from '@/components/shared/LoadingSpinner'
 
+const REMEMBERED_EMAIL_KEY = 'rememberedEmail'
+
 export default function SignInPage() {
   const router = useRouter()
   const { user, loading, signInWithEmail, signInWithGoogle } = useAuth()
+  const [rememberMe, setRememberMe] = useState(false)
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
@@ -24,9 +28,18 @@ export default function SignInPage() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.replace('/dashboard')
+      router.replace('/team')
     }
   }, [loading, user, router])
+
+  useEffect(() => {
+    const remembered = localStorage.getItem(REMEMBERED_EMAIL_KEY)
+    if (remembered) {
+      setValue('email', remembered)
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time read of a locally remembered email on mount
+      setRememberMe(true)
+    }
+  }, [setValue])
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -40,8 +53,13 @@ export default function SignInPage() {
   const onSubmit = async (data: LoginInput) => {
     try {
       await signInWithEmail(data.email, data.password)
+      if (rememberMe) {
+        localStorage.setItem(REMEMBERED_EMAIL_KEY, data.email)
+      } else {
+        localStorage.removeItem(REMEMBERED_EMAIL_KEY)
+      }
       toast.success('Signed in successfully')
-      router.replace('/dashboard')
+      router.replace('/team')
       router.refresh()
     } catch (error: unknown) {
       if (error instanceof Error && error.message.includes('email-not-verified')) {
@@ -55,7 +73,7 @@ export default function SignInPage() {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle()
-      router.replace('/dashboard')
+      router.replace('/team')
     } catch {
       toast.error('Google sign-in failed. Please try again.')
     }
@@ -63,9 +81,9 @@ export default function SignInPage() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-1 text-center">
+      <div className="space-y-1">
+        <p className="text-sm font-medium text-zinc-500">Welcome back</p>
         <h1 className="text-2xl font-bold tracking-tight">Sign in</h1>
-        <p className="text-sm text-zinc-500">Enter your credentials to continue</p>
       </div>
 
       <button
@@ -99,7 +117,7 @@ export default function SignInPage() {
           <span className="w-full border-t border-zinc-200 dark:border-zinc-700" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-zinc-50 px-2 text-zinc-400 dark:bg-zinc-950">or</span>
+          <span className="bg-white px-2 text-zinc-400 dark:bg-zinc-950">or</span>
         </div>
       </div>
 
@@ -126,11 +144,9 @@ export default function SignInPage() {
         </div>
 
         <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <label htmlFor="password" className="text-sm font-medium">
-              Password
-            </label>
-          </div>
+          <label htmlFor="password" className="text-sm font-medium">
+            Password
+          </label>
           <input
             id="password"
             type="password"
@@ -146,6 +162,24 @@ export default function SignInPage() {
               {errors.password.message}
             </p>
           )}
+        </div>
+
+        <div className="flex items-center justify-between">
+          <label className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400">
+            <input
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-zinc-500 dark:border-zinc-700"
+            />
+            Remember me
+          </label>
+          <Link
+            href="/auth/reset-password"
+            className="text-sm font-medium text-zinc-900 hover:underline dark:text-white"
+          >
+            Forgot password?
+          </Link>
         </div>
 
         <button
